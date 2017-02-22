@@ -91,7 +91,7 @@ object List {
 
   def foldRight[A, B](l: List[A], z: B)(f: (A, B) => B): B = l match {
     case Nil => z
-    case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    case Cons(head, tail) => f(head, foldRight(tail, z)(f))
   }
 
   def sum2(ns: List[Int]) = foldRight(ns, 0)((x,y) => x + y)
@@ -105,5 +105,20 @@ object List {
     case Nil => z
     case Cons(head, tail) => foldLeft(tail, f(z, head))(f)
   }
+
+  def sum3(l: List[Int]) = foldLeft(l, 0)(_ + _)
+  def product3(l: List[Double]) = foldLeft(l, 1.0)(_ * _)
+
+  def length2[A](l: List[A]): Int = foldLeft(l, 0)((acc, _) => acc + 1)
+
+  def reverse[A](l: List[A]): List[A] = foldLeft(l, List[A]())((acc,h) => Cons(h,acc))
+
+//  def append[A](x: A, l: List[A]): List[A] = x match {
+//    case Nil => l
+//    case Cons(h, t) =>
+//  }
+
+  def appendViaFoldRight[A](l: List[A], r: List[A]): List[A] =
+    foldRight(l, r)(Cons(_,_))
 
 }
