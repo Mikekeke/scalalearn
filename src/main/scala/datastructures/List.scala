@@ -86,7 +86,6 @@ object List {
       case Cons(_, Nil) => List(buf.toList: _*)
       case Cons(h, t) => buf += h; go(t)
     }
-
     go(l)
   }
 
@@ -102,5 +101,9 @@ object List {
   def length[A](as: List[A]): Int =
     foldRight(as, 0)((_, acc: Int) => acc + 1)
 
+  def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B): B = as match {
+    case Nil => z
+    case Cons(head, tail) => foldLeft(tail, f(z, head))(f)
+  }
 
 }
