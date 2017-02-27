@@ -22,5 +22,12 @@ object Run {
     println(s"Fold left: $foldedRight")
     println(s"Fold right:  $foldedLeft")
 
+    println(s"Transformed: ${List.add1(x)}")
+
+    val doubles: List[String] = List.double2string(List(2.1, 1.4, 8.8))
+    println(s"Doubles to string: $doubles")
+
+    val mapped = List.map(x)(_ + 10)
+    println(s"Mapped: $mapped")
   }
 }

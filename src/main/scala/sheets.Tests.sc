@@ -1,7 +1,7 @@
 import java.util.concurrent.TimeUnit
 
 import scala.concurrent.{Await, Future}
-import scala.util.{Failure, Success}
+import scala.util.{Failure, Success, Try}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 
@@ -24,3 +24,16 @@ val fut: Future[Int] = Future(1).flatMap(x => Future(x + 3))
 
 
 val res = Await.result(fut, Duration(2, TimeUnit.SECONDS))
+
+
+def tryOne(i: Int) = Try(i + 2)
+def tryTwo(i: Int) = Try(i.ensuring(i < 10, "Error!?!?"))
+
+val res2 = tryOne(3).flatMap(x => tryTwo(x))
+
+def forResFunc(i: Int) = for {
+  one <- tryOne(i)
+  two <- tryTwo(one)
+} yield (one, two)
+
+val froRes = forResFunc(5)
