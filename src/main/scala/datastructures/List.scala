@@ -129,4 +129,11 @@ object List {
 
   def map[A,B](as: List[A])(f: A => B): List[B] =
     foldRight(as, Nil: List[B])((h, t) => Cons(f(h), t))
+
+
+  def foldRightViaFoldLeft[A,B](l: List[A], z: B)(f: (A,B) => B): B =
+    foldLeft(reverse(l), z)((b,a) => f(a,b))
+
+  def map_1[A,B](l: List[A])(f: A => B): List[B] =
+    foldRightViaFoldLeft(l, Nil:List[B])((h,t) => Cons(f(h),t))
 }

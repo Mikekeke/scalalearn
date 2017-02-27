@@ -9,6 +9,7 @@ object Run {
 
     val x = List(1,2,3,4,5)
     val x2 = List(4,5,1,2)
+    List.reverse(x)
     val twoLists = List.appendViaFoldRight(x, x2)
     println(s"Length: ${List.length(x)}")
     val dropped = List.drop(x, 5)
