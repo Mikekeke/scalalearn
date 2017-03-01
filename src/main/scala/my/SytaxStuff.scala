@@ -18,6 +18,8 @@ object SyntaxStuff {
     println(f1.nt)
     //calls function
     println(f1.nt())
+
+    //reassigning var
     val f = new Fr{
       nt = _ => "fffff"
     }
