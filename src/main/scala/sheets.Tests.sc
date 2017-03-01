@@ -1,3 +1,4 @@
+import scala.collection.immutable.Seq
 import java.util.concurrent.TimeUnit
 
 import scala.concurrent.{Await, Future}
@@ -37,3 +38,30 @@ def forResFunc(i: Int) = for {
 } yield (one, two)
 
 val froRes = forResFunc(5)
+
+val time = List("1-20", "2-50")
+val result: Seq[(Int, Int)] =
+  time.map(_.split("-") match {
+    case Array(a, b) => (a.toInt, b.toInt)
+  })
+
+val reduced = result.reduceRight((a, b) => (a._1 + b._1, a._2 + b._2))
+println(reduced)
+
+implicit def tuple2string(t: (Int, Int)): String = s"Time: ${t._1} : ${t._2}"
+def count(l: List[String]) = {
+  def countTime(time: (Int, Int)) = {
+    def go(m: Int, hAcc: Int): (Int, Int) =
+      if (m < 60) (hAcc, m) else go(m - 60, hAcc + 1)
+    go(time._2, time._1)
+  }
+
+  val accTuple = l.map(_.split("-") match {
+    case Array(a, b) => (a.toInt, b.toInt)
+  }).reduceRight((a, b) => (a._1 + b._1, a._2 + b._2))
+
+  countTime(accTuple)
+}
+
+val test: String = count(time)
+

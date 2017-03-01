@@ -136,4 +136,8 @@ object List {
 
   def map_1[A,B](l: List[A])(f: A => B): List[B] =
     foldRightViaFoldLeft(l, Nil:List[B])((h,t) => Cons(f(h),t))
+
+  def filter[A](as: List[A])(f: A => Boolean): List[A] = as match {
+    case l @ Cons(h, t) if !f(h) => map(l)((_) => Cons(l.head, t.tail))
+
 }
