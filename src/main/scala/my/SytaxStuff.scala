@@ -11,7 +11,7 @@ object SyntaxStuff {
     println("2 = " + pr(2))
 
     class Fr{
-      var nt: Unit => String = Unit => "sd"
+      var nt: Unit => String = Unit => "initial"
     }
     val f1 = new Fr
     //prints variable
@@ -21,10 +21,17 @@ object SyntaxStuff {
 
     //reassigning var
     val f = new Fr{
-      nt = _ => "fffff"
+      nt = _ => "reassigned"
     }
     println(f.nt)
     println(f.nt())
+
+    //same result
+    var userDir1: Unit => Long = Unit => { System.currentTimeMillis() }
+//    var userDir2: Unit => Long = _ => { System.currentTimeMillis() } - doesn't work
+    var userDir3 = () => { System.currentTimeMillis() }
+    println(userDir1)
+    println(userDir1())
   }
 
 }
