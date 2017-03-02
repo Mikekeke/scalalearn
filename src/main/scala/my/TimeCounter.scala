@@ -9,11 +9,11 @@ object TimeCounter {
   val helpCommand = Array("-h", "-help")
 
   def main(args: Array[String]): Unit = {
-    require(args.nonEmpty, "Type the time. Pls. -h for help")
-    println(args.mkString(" and "))
+//    require(args.nonEmpty, "Type the time. Pls. -h for help")
+//    println(args.mkString(" and "))
 
-    //    val times = "11:20-12:54,13:00-14:10"
-    val times = args(0)
+        val times = "11:20-12:54,13:00-14:10"
+//    val times = args(0)
 
     if (helpCommand contains times) {
       println("Type time in format hh:mm-hh-mm, comma separated.  -h for help")
@@ -22,7 +22,7 @@ object TimeCounter {
 
     countTime(times) match {
       case Success(time) =>
-        println(s"Total time: $times}")
+        println(s"Total time: $time")
       case Failure(e) =>
         System.err.println(s"Error parsing $times")
         e.printStackTrace()
@@ -30,12 +30,7 @@ object TimeCounter {
   }
 
   private def countTime(timeString: String) = {
-    // ain't work with implicit for some reason (shows $%#@$#@-like error)
-    // implicit val formatTuple: String => Int = _.split(":").map(_.toInt).reduceRight((h:Int, m:Int) => h * 60 + m)
-    val formatTuple: String => Int = _.split(":").map(_.toInt).reduceRight((h: Int, m: Int) => h * 60 + m)
-
-    def untuple(t: (String, String))(implicit f: String => Int) =
-      (f(t._2) - f(t._1)).ensuring(_ >= 0, s"Some negative time u put: ${t._1} - ${t._2}")
+    def strToMins(s: String) = s.split(":").map(_.toInt).reduceRight((h, m) => h * 60 + m)
 
     def format(mins: Int) = {
       def go(m: Int, h: Int): (Int, Int) = if (m < 60) (h, m) else go(m - 60, h + 1)
@@ -45,7 +40,8 @@ object TimeCounter {
 
     Try {
       val timesArray = timeString.replaceAll(" ", "").split(",").ensuring(_.nonEmpty, "Arguments can't be parsed")
-      val totalMins = timesArray.map(_.split("-")).map(arr => (arr(0), arr(1))).map(untuple(_)(formatTuple)).sum
+      val arrayOfMinutes = timesArray.map(_.split("-").map(strToMins).reduceRight((l, r) => (r - l).ensuring(r > l)))
+      val totalMins = arrayOfMinutes.sum
       format(totalMins)
     }
   }
