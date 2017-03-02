@@ -11,6 +11,7 @@ val times = List(
   "14:57-17:50",
   "10:45-11:05"
 )
+
 def toMins(l: List[String]) = {
   implicit val formattedTimeToMins: String => Int = s => s.split(":").map(_.toInt).reduceRight((h:Int, m:Int) => h * 60 + m)
   def untuple(t:(String, String))(implicit f: String => Int) = f(t._2) - f(t._1)
@@ -24,7 +25,6 @@ def toMins(l: List[String]) = {
   }
 
   format(totalMins)
-
 }
 
 val res = toMins(times)
