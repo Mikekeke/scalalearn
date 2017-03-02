@@ -43,7 +43,9 @@ object TimeCounter {
         format(totalMins)
       } match {
         case Success(time) => println(s"Total time: $times}")
-        case Failure(e) => sys.error("Error parsing")
+        case Failure(e) =>
+          System.err.println(s"Error parsing $timeString")
+          e.printStackTrace()
       }
     }
   }
