@@ -20,33 +20,33 @@ object TimeCounter {
       return
     }
 
-    countTime(times)
+    countTime(times) match {
+      case Success(time) =>
+        println(s"Total time: $times}")
+      case Failure(e) =>
+        System.err.println(s"Error parsing $times")
+        e.printStackTrace()
+    }
+  }
 
-    def countTime(timeString: String) = {
-      // ain't work with implicit for some reason (shows $%#@$#@-like error)
-      // implicit val formatTuple: String => Int = _.split(":").map(_.toInt).reduceRight((h:Int, m:Int) => h * 60 + m)
-      val formatTuple: String => Int = _.split(":").map(_.toInt).reduceRight((h: Int, m: Int) => h * 60 + m)
+  private def countTime(timeString: String) = {
+    // ain't work with implicit for some reason (shows $%#@$#@-like error)
+    // implicit val formatTuple: String => Int = _.split(":").map(_.toInt).reduceRight((h:Int, m:Int) => h * 60 + m)
+    val formatTuple: String => Int = _.split(":").map(_.toInt).reduceRight((h: Int, m: Int) => h * 60 + m)
 
-      def untuple(t: (String, String))(implicit f: String => Int) =
-        (f(t._2) - f(t._1)).ensuring(_ >= 0, s"Some negative time u put: ${t._1} - ${t._2}")
+    def untuple(t: (String, String))(implicit f: String => Int) =
+      (f(t._2) - f(t._1)).ensuring(_ >= 0, s"Some negative time u put: ${t._1} - ${t._2}")
 
-      def format(mins: Int) = {
-        def go(m: Int, h: Int): (Int, Int) = if (m < 60) (h, m) else go(m - 60, h + 1)
+    def format(mins: Int) = {
+      def go(m: Int, h: Int): (Int, Int) = if (m < 60) (h, m) else go(m - 60, h + 1)
+      val hm = go(mins, 0)
+      s"${hm._1}:${hm._2}"
+    }
 
-        val hm = go(mins, 0)
-        s"${hm._1}:${hm._2}"
-      }
-
-      Try{
-        val arr = timeString.replaceAll(" ","").split(",").ensuring(_.nonEmpty, "Arguments can't be parsed")
-        val totalMins = arr.map(_.split("-")).map(arr => (arr(0), arr(1))).map(untuple(_)(formatTuple)).sum
-        format(totalMins)
-      } match {
-        case Success(time) => println(s"Total time: $times}")
-        case Failure(e) =>
-          System.err.println(s"Error parsing $timeString")
-          e.printStackTrace()
-      }
+    Try {
+      val timesArray = timeString.replaceAll(" ", "").split(",").ensuring(_.nonEmpty, "Arguments can't be parsed")
+      val totalMins = timesArray.map(_.split("-")).map(arr => (arr(0), arr(1))).map(untuple(_)(formatTuple)).sum
+      format(totalMins)
     }
   }
 }
