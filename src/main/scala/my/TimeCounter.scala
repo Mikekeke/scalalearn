@@ -44,7 +44,7 @@ object TimeCounter {
       val arrayOfMinutes =
         timesArray.map(str => str.split("-")
           .map(strToMins).ensuring(minsArr => minsArr(0) < minsArr(1), s"Probably u set time wrong here: $str")
-          .reduceRight((l, r) => (r - l).ensuring(r > l, "")))
+          .reduceRight((l, r) => r - l))
       val totalMins = arrayOfMinutes.sum
       format(totalMins)
     }
