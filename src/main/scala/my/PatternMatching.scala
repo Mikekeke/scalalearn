@@ -5,7 +5,7 @@ import my.pattern_matching.{Apple, Fruit, Orange, appleLil}
 /**
   * Created by ibes on 22.02.17.
   */
-object Run {
+object PatternMatching {
   def main(args: Array[String]): Unit = {
     val ints = MyArgs("one", "two", "3")
     println(ints)
