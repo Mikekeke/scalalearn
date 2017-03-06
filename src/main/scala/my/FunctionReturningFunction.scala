@@ -13,8 +13,6 @@ object FunctionReturningFunction extends App {
   //calling 2 functions one line
   val ex_two: Int = incrementer(5)(3)
 
-
   println(s"ex_one = $ex_one")
   println(s"ex_two = $ex_two")
-
 }
