@@ -30,6 +30,25 @@ class Dee {
 val t4 = new Dee {
   f = "d"
 }
+//usage of mutator - END
+
+println(s"instances cnt")
+class Instances {
+  Instances.cont += 1
+}
+object Instances {
+  var cont = 0
+}
+
+val instances = scala.collection.mutable.ListBuffer[Instances]()
+
+for(_ <- 1 to 6 by 2) {
+  instances += new Instances
+}
+
+(1 to 3) foreach (_ => instances += new Instances)
+
+println(s"instances cnt = ${Instances.cont}")
 
 
 
