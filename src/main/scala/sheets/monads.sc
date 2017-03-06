@@ -17,3 +17,7 @@ val t1 =
 val t2 =
   o1.flatMap(o2).flatMap(o3)
 
+implicit class Stringer(s: String) {
+  def ! : Unit = println(s"$s!")
+}
+"ls" !
