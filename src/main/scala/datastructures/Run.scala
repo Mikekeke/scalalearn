@@ -1,12 +1,11 @@
 package datastructures
 
+
 /**
   * Created by ibes on 21.02.17.
   */
 object Run {
-
-  def main(args: Array[String]): Unit = {
-
+  def testList() = {
     val x = List(1,2,3,4,5)
     val x2 = List(4,5,1,2)
     List.reverse(x)
@@ -30,5 +29,22 @@ object Run {
 
     val mapped = List.map(x)(_ + 10)
     println(s"Mapped: $mapped")
+  }
+
+  def testTree() ={
+    val tree1 = Branch(
+      Branch(Leaf(1), Leaf(11)),
+      Branch(Leaf(2), Leaf(22))
+    )
+
+    println(s"Tree size = ${Tree.size(tree1)}")
+    println(s"Tree maximum = ${Tree.maximum(tree1)}")
+    println(s"Tree depth = ${Tree.depth(tree1)}")
+    println(s"Tree mapped = ${Tree.map(tree1)(x => x + 3)}")
+  }
+
+  def main(args: Array[String]): Unit = {
+    testTree()
+
   }
 }
