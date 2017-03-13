@@ -21,9 +21,9 @@ sealed trait Option[+A] {
   }
 
   def orElse[B >: A](ob: => Option[B]): Option[B] =
-    this map(Some(_)) getOrElse ob
+    this map (Some(_)) getOrElse ob
 
-  def orElse_1[B>:A](ob: => Option[B]): Option[B] = this match {
+  def orElse_1[B >: A](ob: => Option[B]): Option[B] = this match {
     case None => ob
     case _ => this
   }
@@ -34,10 +34,53 @@ sealed trait Option[+A] {
   }
 
   def filter(f: A => Boolean): Option[A] =
-    flatMap(x => if(f(x)) Some(x) else None)
+    flatMap(x => if (f(x)) Some(x) else None)
+
+  def mean(xs: Seq[Double]): Option[Double] =
+    if (xs.isEmpty) None
+    else Some(xs.sum / xs.length)
+
+  def variance(xs: Seq[Double]): Option[Double] =
+    mean(xs) flatMap (m => mean(xs.map(x => math.pow(x - m, 2))))
+
+  def map2[A, B, C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+    a.flatMap(ax => b.map(bx => f(ax, bx)))
+
+  def sequence[A](a: List[Option[A]]): Option[List[A]] =
+    a match {
+      case Nil => Some(Nil)
+      case h :: t => h flatMap (hh => sequence(t) map (hh :: _))
+    }
+  /*
+  It can also be implemented using `foldRight` and `map2`. The type annotation on `foldRight` is needed here; otherwise
+  Scala wrongly infers the result type of the fold as `Some[Nil.type]` and reports a type error (try it!). This is an
+  unfortunate consequence of Scala using subtyping to encode algebraic data types.
+  */
+  def sequence_1[A](a: List[Option[A]]): Option[List[A]] =
+    a.foldRight[Option[List[A]]](Some(Nil))((x,y) => map2(x,y)(_ :: _))
+
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
+    a match {
+      case Nil => Some(Nil)
+      case h::t => map2(f(h), traverse(t)(f))(_ :: _)
+    }
+
+  def traverse_1[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
+    a.foldRight[Option[List[B]]](Some(Nil))((h,t) => map2(f(h),t)(_ :: _))
+
+  def sequenceViaTraverse[A](a: List[Option[A]]): Option[List[A]] =
+    traverse(a)(x => x)
+
 }
 
 case class Some[+A](get: A) extends Option[A]
+
 case object None extends Option[Nothing]
+
+object Option {
+  def lift[A, B](f: A => B): Option[A] => Option[B] = _ map f
+
+  // def lift[A,B](f: A => B): Option[A] => Option[B] = (o: Option[A]) => o.map(f)
+}
 
 

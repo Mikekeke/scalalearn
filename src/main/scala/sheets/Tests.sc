@@ -44,6 +44,7 @@ val s22_2 = tstString.flatMap(x => new String(x.toString))
 val s31 = tstString.map(x => x)
 val s32 = tstString.flatMap(x => s"$x$x")
 
+val list:List[String] = "one" :: "two"
 
 
 

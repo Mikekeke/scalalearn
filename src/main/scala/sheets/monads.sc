@@ -1,3 +1,5 @@
+import scala.util.Try
+
 def o1 = Some(1)
 def o2(x: Int) = Some(x + 11)
 def o3(x: Int) = Some(x * 2)
@@ -17,7 +19,7 @@ val t1 =
 val t2 =
   o1.flatMap(o2).flatMap(o3)
 
-implicit class Stringer(s: String) {
-  def ! : Unit = println(s"$s!")
-}
-"ls" !
+val d = Some("33f".toInt)
+try d
+catch {case e: Exception => println(e)}
+Try
