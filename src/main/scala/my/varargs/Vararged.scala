@@ -1,4 +1,4 @@
-package my
+package my.varargs
 
 /**
   * Created by ibes on 22.02.17.

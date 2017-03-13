@@ -1,6 +1,6 @@
 package my.pattern_matching
 
-trait Fruit {
+sealed trait Fruit {
   def name: String
 //  val name: String
 }
