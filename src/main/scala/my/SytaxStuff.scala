@@ -11,6 +11,7 @@ object SyntaxStuff {
     println("2 = " + pr(2))
 
     class Fr{
+      // function assigned to var
       var nt: Unit => String = Unit => "initial"
     }
     val f1 = new Fr

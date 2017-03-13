@@ -5,7 +5,7 @@ package my
   */
 object FunctionReturningFunction extends App {
 
-  def incrementer(increment: Int): (Int) => Int = (x: Int) => x + increment
+  def incrementer(increment: Int): Int => Int = (x: Int) => x + increment
 
   def plusTen: (Int) => Int = incrementer(10)
 
