@@ -7,6 +7,8 @@ object FunctionReturningFunction extends App {
 
   def incrementer(increment: Int): Int => Int = (x: Int) => x + increment
 
+  // !val
+//  val plusTen: (Int) => Int = incrementer(10)
   def plusTen: (Int) => Int = incrementer(10)
 
   val ex_one = plusTen(3)

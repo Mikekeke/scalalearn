@@ -10,9 +10,9 @@ object PatternMatching {
 
     // pattern matching tests (doesn't work in REPL for some reason)
     def testFruit(f: Fruit) = f match {
-//      case appleLil() => println("Apple Lil) - will work too
-      case o @ appleLil() => println(o)
-      case a @ Apple("Frank") => println(s"This is apple Frank! - $a")
+      //      case appleLil() => println("Apple Lil) - will work too
+      case o@appleLil() => println(o)
+      case a@Apple("Frank") => println(s"This is apple Frank! - $a")
       case Apple(name) => println(s"Apple name: $name")
       case or: Orange => println(or)
     }
