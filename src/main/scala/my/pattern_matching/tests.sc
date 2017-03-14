@@ -57,7 +57,7 @@ val withAnonCase = lists.filter {
   case _ => false
 }
 
-// Partial function
+// Partial function(short "case" syntax)
 val pf: PartialFunction[(String, Int), String] = {
   case (word, freq) if freq > 3 && freq < 25 => word
 }
