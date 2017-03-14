@@ -42,7 +42,7 @@ println(hallOfFame2.mkString(" - "))
 val lists = List(1, 2, 3) :: List.empty :: List(5, 3) :: Nil
 
 val sugared = for {
-  list@head :: _ <- lists
+  list @ head :: _ <- lists
 } yield list.size
 
 val desugared = lists.withFilter(_ match {
