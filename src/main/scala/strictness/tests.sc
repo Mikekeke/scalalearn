@@ -26,7 +26,7 @@ def non_strict(f: => Int) = {
 strict(getRnd)
 println()
 non_strict(getRnd)
-println("*".)
+println("*" * 5)
 
 def someTest1(n: Int) = {
   println("someTest1 - 1: " + n)
