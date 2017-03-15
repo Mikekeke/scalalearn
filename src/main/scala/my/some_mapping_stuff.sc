@@ -1,4 +1,7 @@
 lazy val stream: Stream[Int] =
-  1 #:: 2 #:: 11 #:: 22 #:: stream.tail
+  1 #:: 2 #:: 11 #:: 22 #:: stream.zip(stream.tail).map(n => n._2 - n._1)
 
-stream take 20 foreach println
+stream take 6 foreach println
+
+val stream2 = Stream.from(1, 23)
+stream2.take(3).foreach(println)

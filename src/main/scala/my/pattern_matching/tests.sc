@@ -67,4 +67,8 @@ val wordFrequencies = ("habitual", 6) :: ("and", 56) :: ("consuetudinary", 2) ::
 
 val collected =  wordFrequencies.collect(pf)
 
-val mapped = wordFrequencies.map(pf) // error
+//val mapped = wordFrequencies.map(pf) // error
+
+val lst = List("one", "two")
+val  lifted1 = lst.lift(1).map(_ + 10).getOrElse(11)
+val  lifted2 = lst.lift(4).map(_ + 10).getOrElse(11)
