@@ -10,6 +10,8 @@ object ErrorsRun extends App{
   val test2 = None
   println(test2.orElse(Some("Some")))
 
-
+  val op = Some(Some(2))
+  val op1: Option[Option[Int]] = op.map(x => x.map(xx => xx + 1))
+  val op2: Option[Int] = op.flatMap(x => x.map(xx => xx + 1))
 
 }
