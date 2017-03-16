@@ -12,14 +12,16 @@ val m3 = mon.flatMap(d => List(d, d + 2))
 
 val x = 5
 val mon2 = Some(x)
-val s1 = mon2.map(x => List(x))
-val s2 = mon2.flatMap(x => None)
+val s1: Option[List[Int]] = mon2.map(x => List(x))
+val s2: Option[Nothing] = mon2.flatMap(x => None)
 
 val d1 = "test".map(c => c + "-")
 val d2 = "test".flatMap(c => c + "-")
 val d3 = "test".to[List]
 
 val c = "test" (3)
+val c_opt1 = "test".lift(3)
+val c_opt2 = "test".lift(22)
 
 val fut: Future[Int] = Future(1).flatMap(x => Future(x + 3))
 
@@ -43,8 +45,8 @@ val s22: Seq[Char] = withIndex.flatMap(t => s"${t._1}${t._2}")
 val s22_2 = tstString.flatMap(x => new String(x.toString))
 val s31 = tstString.map(x => x)
 val s32 = tstString.flatMap(x => s"$x$x")
+val s33 = tstString.map(x => s"$x$x")
 
-val list:List[String] = "one" :: "two"
 
 
 
