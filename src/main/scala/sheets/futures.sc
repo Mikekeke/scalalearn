@@ -1,13 +1,19 @@
+import java.util.Random
 import java.util.concurrent.TimeUnit
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
+val r = new Random()
+def f1(r: Long) = Future {
+  if (r > 10) r else throw new IllegalStateException("wrong")
+}
+def inFuture = f1(r.nextInt(30
+)).map(res => {
+  println("Future came")
+  res > 15
+})
 
-def f1 = Future(println("f1"))
-def f2 = Future(println("f2"))
-def f3 = Future(println("f3"))
+Await.result(inFuture, 3 seconds)
 
-val d: Future[Unit] = for {
-  tes <-f1
-} yield tes
+
