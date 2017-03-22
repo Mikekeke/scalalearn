@@ -72,3 +72,10 @@ val collected =  wordFrequencies.collect(pf)
 val lst = List("one", "two")
 val  lifted1 = lst.lift(1).map(_ + 10).getOrElse(11)
 val  lifted2 = lst.lift(4).map(_ + 10).getOrElse(11)
+
+// string "unpacking"
+val str = "left:right"
+val (s1, s2) = (str.substring(0, str.indexOf(":")), str.substring(str.indexOf(":") + 1, str.length))
+
+// assigning to tuple - for comparison with "unpacking"
+val f: (String, String) = (str.substring(0, str.indexOf(":")), str.substring(str.indexOf(":") + 1, str.length))
