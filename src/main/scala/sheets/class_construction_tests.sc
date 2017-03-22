@@ -50,6 +50,11 @@ for(_ <- 1 to 6 by 2) {
 
 println(s"instances cnt = ${Instances.cont}")
 
+// with defaults (can be used in apply())
+case class WDefaults(s1: String = "default1", s2: String = "default2")
+val wdef1 = WDefaults()
+val wdef2 =WDefaults(s2 = "changed")
+
 
 
 
