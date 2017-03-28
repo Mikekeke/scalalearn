@@ -19,6 +19,5 @@ object RunTest extends App {
   // ain't work coz default constructor is private
 //  val nErr = new RegularPrivate(3, "test")
 //  println(nErr)
-val cleanStringWith3: String => (String => String) = s => fun => fun()
 
 }
