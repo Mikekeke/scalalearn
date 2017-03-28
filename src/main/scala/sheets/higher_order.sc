@@ -4,13 +4,22 @@ val string = "@Some words"
 
 def clean(s: String)(cleaner: String => String) = cleaner(s)
 
+// @return   a function `f` such that `f(x1)(x2) == apply(x1, x2)`
 val cleanStringWith: (String, String => String) => String = (str, pattern) => pattern(str)
-def cleanStringWith2(s:String, f: String => String): String = f(s)
+def cleanStringWith2(s:String)(f: String => String): String = f(s)
 val cleanNonWords: String => String = s => "@".r.replaceAllIn(s, "")
-clean(string)(cleanStringWith2(_, cleanNonWords))
+clean(string)(cleanStringWith(_, cleanNonWords))
+clean(string)(cleanStringWith2(_)(cleanNonWords))
 
 clean(string)(s => pattern.r.replaceAllIn(s, ""))
 // decomposition for decomposition - END
+
+def stringInput(s: String): String = s + " inputed"
+def stringTransformDef(s: String)(tr: String => String) = tr(s)
+val stringTransformVal: (String, String => String) => String = (s, transform) => transform(s)
+stringInput(stringTransformDef("test")(_ + " transformed"))
+// just remember - val doesn't work with generic type
+stringInput(stringTransformVal("test", _ + " transformed"))
 
 val f: Int => Boolean => Int = x => bool => if (bool) x else 500
 f(3)(false)
@@ -39,4 +48,4 @@ val z2: (String, Int, (String, Int) => String) => String = reportResult[String, 
 val d2 = z2("test", 12, (x,y) => x + y)
 //but not val d2 = z2("test", 12)((x,y) => x + y)!
 //not compiles val z3 = reportResult[String, Int, String](_, _)((x,y) => x + y)
-val z4 = reportResult[String, Int, String]("test", 11)((str, num) => )
+//val z4 = reportResult[String, Int, String]("test", 11)((str, num) => )
