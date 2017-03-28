@@ -1,3 +1,17 @@
+// decomposition for decomposition
+val pattern = "@"
+val string = "@Some words"
+
+def clean(s: String)(cleaner: String => String) = cleaner(s)
+
+val cleanStringWith: (String, String => String) => String = (str, pattern) => pattern(str)
+def cleanStringWith2(s:String, f: String => String): String = f(s)
+val cleanNonWords: String => String = s => "@".r.replaceAllIn(s, "")
+clean(string)(cleanStringWith2(_, cleanNonWords))
+
+clean(string)(s => pattern.r.replaceAllIn(s, ""))
+// decomposition for decomposition - END
+
 val f: Int => Boolean => Int = x => bool => if (bool) x else 500
 f(3)(false)
 f(3)(true)
