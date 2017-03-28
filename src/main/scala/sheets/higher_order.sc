@@ -1,14 +1,19 @@
+import java.lang.Number
+
 // decomposition for decomposition
 val pattern = "@"
 val string = "@Some words"
 
 def clean(s: String)(cleaner: String => String) = cleaner(s)
-
-// @return   a function `f` such that `f(x1)(x2) == apply(x1, x2)`
-val cleanStringWith: (String, String => String) => String = (str, pattern) => pattern(str)
-def cleanStringWith2(s:String)(f: String => String): String = f(s)
 val cleanNonWords: String => String = s => "@".r.replaceAllIn(s, "")
+
+// !!!@return   a function `f` such that `f(x1)(x2) == apply(x1, x2)`
+// that's why cleanStringWith: (String, String => String)
+// works in (cleaner: String => String)
+val cleanStringWith: (String, String => String) => String = (str, pattern) => pattern(str)
 clean(string)(cleanStringWith(_, cleanNonWords))
+
+def cleanStringWith2(s:String)(f: String => String): String = f(s)
 clean(string)(cleanStringWith2(_)(cleanNonWords))
 
 clean(string)(s => pattern.r.replaceAllIn(s, ""))
@@ -39,13 +44,40 @@ val f3: Int => Boolean => (=> Int) => Int = x => bool => num => if (bool) x else
 f3(3)(false)(inter("343"))
 f3(3)(true)(inter("343"))
 
+// Partial applying ***********************************************************
+type Customer = String
+type CustomerId = Int
+type GetCustomer = CustomerId => Customer
+type Connection = String
 
-private def reportResult[U, M, R](receiver: U, message: M)(f:(U, M) => R) = f(receiver, message)
+def getCustomer1(c: Connection)(id: CustomerId): Customer =
+  s"Customer with ID $id via connection '$c'"
+val getCustomer2: Connection => CustomerId => Customer = c => id =>
+  s"Customer with ID $id via connection '$c'"
+val bdConnection: Connection = "SQL-connection"
+val getCustViaSQL1: (CustomerId) => Customer = getCustomer1(bdConnection)
+val getCustViaSQL2: (CustomerId) => Customer = getCustomer2(bdConnection)
 
-val z1: ((String, Int) => String) => String = reportResult[String, Int, String]("test", 11)(_)
-val d1 = z1((x, y) => x + y)
-val z2: (String, Int, (String, Int) => String) => String = reportResult[String, Int, String](_, _)(_)
-val d2 = z2("test", 12, (x,y) => x + y)
-//but not val d2 = z2("test", 12)((x,y) => x + y)!
-//not compiles val z3 = reportResult[String, Int, String](_, _)((x,y) => x + y)
-//val z4 = reportResult[String, Int, String]("test", 11)((str, num) => )
+// Partial applying ***********************************************************
+def divide[E, S](ifZero: => E)(ifOk: => Double => S)(a: Double, b: Double) =
+  if (b == 0) ifZero else ifOk(a / b)
+
+// will print all right here if val instead of def
+def ifZero1 = {println("eval ifZero"); println("Error mthfkr!")}
+
+// will throw right here coz of val
+//val ifZero2: Nothing = throw new IllegalArgumentException("Cant divide by 0")
+def ifZero2: Nothing = throw new IllegalArgumentException("Cant divide by 0")
+def ifOk = (x: Double) => {println("eval ifOk"); s"Successful: $x"}
+
+val divide1: (Double, Double) => Any = divide[Int, String](ifZero2)(ifOk)
+divide1(2,3)
+
+def divideNotByName[E, S](ifZero: E)(ifOk: Double => S)(a: Double, b: Double) =
+  if (b == 0) ifZero else ifOk(a / b)
+
+def divide2: (Double, Double) => Any = divideNotByName[Int, String](ifZero2)(ifOk)
+println("dividing w divideNotByName")
+// throws exception from ifZero2 coz evaluates it by value during divide2 call
+divide2(2,3)
+
