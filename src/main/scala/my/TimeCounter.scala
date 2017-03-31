@@ -30,19 +30,21 @@ object TimeCounter {
   }
 
   private def countTime(timeString: String) = {
+    val timePattern = "(\\d\\d):(\\d\\d)-(\\d\\d):(\\d\\d)"
+
     // Converts string if hh:mm to Int minutes
-    def strToMins(s: String) = s.split(":").map(_.toInt).reduceRight((h, m) => h * 60 + m)
+    val strToMins = (s:String) => s.split(":").map(_.toInt).reduceRight((h, m) => h * 60 + m)
 
     def format(mins: Int) = {
       def go(m: Int, h: Int): (Int, Int) = if (m < 60) (h, m) else go(m - 60, h + 1)
-      val hm = go(mins, 0)
-      s"${hm._1}:${hm._2}"
+      val (h, m) = go(mins, 0)
+      s"$h:$m"
     }
 
     Try {
       val timesArray: Array[String] = timeString.replaceAll(" ", "").split(",").ensuring(_.nonEmpty, "No values to parse")
       val arrayOfMinutes =
-        timesArray.map(str => str.split("-")
+        timesArray.map(str => str.ensuring(_.matches(timePattern), s"Invalid input format on $str").split("-")
           .map(strToMins).ensuring(minsArr => minsArr(0) < minsArr(1), s"Probably u set time wrong here: $str")
           .reduceRight((l, r) => r - l))
       val totalMins = arrayOfMinutes.sum
