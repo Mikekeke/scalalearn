@@ -9,10 +9,30 @@ object FoldingStuff extends App {
   test2.foldLeft("-start-")(_+_)
   test2.foldRight("-start-")(_+_)
 
-  test2.foldLeft(List[String]())(foldingFun)
+  val test3 = "12345"
+  val foldStarSpacer: (List[String], Char) => List[String] = foldingFun("-*-")
 
-  def foldingFun(list: List[String], s: Char) =
+//  will throw NullPointer coz of 'val', which be evaluated only in string 27
+//  compare to 'def foldingFun', that will be evaluated on call
+//  val foldStarSpacer: (List[String], Char) => List[String] = foldingFun2("-*-")
+
+  def foldingFun(spacer: String)(list: List[String], s: Char) =
     if(list.isEmpty) List(s.toString)
-    else list.head + s + "-1-" :: list.tail
+    else {
+      val h = list.head
+      val t = list.tail
+      val res = h + s + spacer :: t
+      res
+  }
 
+  val foldingFun2: (String) => (List[String], Char) => List[String] = (spacer: String) => (list: List[String], s: Char) =>
+    if(list.isEmpty) List(s.toString)
+    else {
+      val h = list.head
+      val t = list.tail
+      val res = h + s + spacer :: t
+      res
+    }
+
+  println(test3.foldLeft(List[String]())(foldStarSpacer))
 }
