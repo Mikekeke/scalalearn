@@ -1,11 +1,25 @@
+import scala.collection.immutable.::
 // insertion sort
-
+val testList = 8 :: 1 :: 14 :: 34 :: Nil
 def sortAcc(l: List[Int]): List[Int] = l match {
   case Nil => Nil
   case x :: xs => insert(x, sortAcc(xs))
 }
 
-def insert(x: Int, xs: List[Int]): List[Int] = ???
+def insert(x: Int, xs: List[Int]): List[Int] = {
+  xs match {
+    case List() => List(x)
+    case y :: ys => if (x <= y) x :: xs else y :: insert(x, ys)
+  }
+}
+sortAcc(testList)
+
+def init[T](l: List[T]): List[T] = l.tail match {
+  case _ :: _ => l.head :: init(l.tail)
+  case Nil => Nil
+}
+
+init(testList)
 
 
 sealed trait Expr {
