@@ -1,4 +1,14 @@
 import scala.collection.immutable.::
+
+def merge(xs: List[Int], ys: List[Int]): List[Int] =
+  (xs, ys) match {
+    case (Nil, xs) => ys
+    case (_, Nil) => xs
+    case (x1 :: xs1, y1 :: ys1) =>
+      if (x1 < y1) x1 :: merge(xs1, ys)
+      else y1 :: merge(xs, ys1)
+  }
+
 // insertion sort
 val testList = 8 :: 1 :: 14 :: 34 :: Nil
 def sortAcc(l: List[Int]): List[Int] = l match {
