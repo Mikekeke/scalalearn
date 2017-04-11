@@ -21,7 +21,3 @@ def encode[T](list: List[T]) =
 
 encode(testList)
 
-def guessed(l: List[Int]) = l match {
-  case List(_, _*, 4) => println("Matched")
-  case _ => println("No match")
-}
