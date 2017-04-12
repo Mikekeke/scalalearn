@@ -24,6 +24,15 @@ def insert(x: Int, xs: List[Int]): List[Int] = {
 }
 sortAcc(testList)
 
+def removeAt[T](list: List[T], n: Int): List[T] = list match {
+  case Nil => Nil
+  case x :: xs => if (n == 0) xs else x :: removeAt(xs, n -1)
+}
+
+removeAt(testList, 7)
+
+List.tabulate( 4,5 )( _ * _ )
+
 def init[T](l: List[T]): List[T] = l.tail match {
   case _ :: _ => l.head :: init(l.tail)
   case Nil => Nil

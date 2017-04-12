@@ -1,16 +1,21 @@
 def add(x: Int) = Some(x + 10)
 val opt = Some(1)
 
-for {
+val de = for {
   x <- opt
   x2 <- add(x)
   // this assignment causes to call additional map()
   d = x + x2
-} yield x + x2 + d
+} yield {println(s"x = $x, x2 = $x2, d = $d");x + x2 + d}
 
-opt.flatMap { x =>
-  add(x).map { case x$1@(x2) =>
-    val x$2@(d) = x + x2
-    (x$2, x$1)
-  }.map { case (d, x2) => x + x2 + d }
-}
+def gameResults(): Seq[(String, Int)] =
+  ("Daniel", 3500) :: ("Melissa", 13000) :: ("John", 7000) :: Nil
+
+def hallOfFame = for {
+  result <- gameResults()
+  (name, score) = result
+  if score > 5000
+} yield name
+hallOfFame
+
+List(1,2,3,4).grouped(3).next()
