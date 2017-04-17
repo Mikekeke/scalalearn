@@ -5,6 +5,7 @@ package streams
   */
 case class NotSoStream(num: Int)
 case class SoSoStream(num: () => Int)
+
 object SoSoStream {
   def cons(num: => Int): SoSoStream = SoSoStream(() => num)
 
