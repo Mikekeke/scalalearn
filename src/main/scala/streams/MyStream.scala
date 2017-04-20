@@ -69,6 +69,11 @@ sealed trait MyStream[+A] {
   def map[B](f: A => B): MyStream[B] =
     foldRight(empty[B])((h, t) => cons(f(h), t))
 
+  def mapSimple[B](f: A => B): MyStream[B] = this match {
+    case Empty => empty
+    case Cons(h, t) => cons(f(h()), t().mapSimple(f))
+  }
+
   def filter(p: A => Boolean): MyStream[A] =
     foldRight(empty[A])((h,t) => if (p(h)) cons(h, t) else t)
 
