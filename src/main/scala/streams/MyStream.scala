@@ -77,6 +77,9 @@ sealed trait MyStream[+A] {
   def filter(p: A => Boolean): MyStream[A] =
     foldRight(empty[A])((h,t) => if (p(h)) cons(h, t) else t)
 
+  def find(p: A => Boolean): Option[A] =
+    filter(p).headOption
+
   def append[B>:A](s: => MyStream[B]): MyStream[B] =
     foldRight(s)((h,t) => cons(h, t))
 
@@ -99,4 +102,10 @@ object MyStream {
 
   def apply[A](as: A*): MyStream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
+
+  def constant[A](a: A): MyStream[A] = cons(a, constant(a))
+
+  def from(n: Int): MyStream[Int] = cons(n, from(n + 1))
+
+  def fibs = cons(0, cons(1, ))
 }

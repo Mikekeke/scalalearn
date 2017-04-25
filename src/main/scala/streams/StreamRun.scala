@@ -15,4 +15,16 @@ object StreamRun extends App{
   println(s"Map Simple x*11: ${MyStream(1,2,3).mapSimple(_ * 11).toList}")
   println(s"Filter x <=4: ${MyStream(1,2,3,1,3,4,5,7).filter(_ <= 4).toList}")
 
+  val str = MyStream(1,2,3,1,3,4,5,7)
+  str.filter(_ > 3).toList
+  println(str.filter(p => p > 3))
+
+  val Cons(h, t) = str
+  println(h())
+  println(t())
+
+  val ones: MyStream[Int] = MyStream.from(6)
+  println(ones take 5 toList)
+
+
 }
