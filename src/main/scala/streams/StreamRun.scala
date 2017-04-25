@@ -23,8 +23,8 @@ object StreamRun extends App{
   println(h())
   println(t())
 
-  val ones: MyStream[Int] = MyStream.from(6)
-  println(ones take 5 toList)
+  val ones: MyStream[Int] = MyStream.fibs
+  println(ones take 7 toList)
 
 
 }

@@ -21,3 +21,6 @@ def encode[T](list: List[T]) =
 
 encode(testList)
 
+def cnct(l1: List[Int], l2: List[Int]) =
+//  (l1 foldRight l2)(_ :: _)
+  (l1 foldLeft l2)(_ :: _)

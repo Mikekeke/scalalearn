@@ -103,9 +103,34 @@ object MyStream {
   def apply[A](as: A*): MyStream[A] =
     if (as.isEmpty) empty else cons(as.head, apply(as.tail: _*))
 
-  def constant[A](a: A): MyStream[A] = cons(a, constant(a))
+  def myConstant[A](a: A): MyStream[A] = cons(a, myConstant(a))
+
+  // This is more efficient than `cons(a, constant(a))` since it's just
+  // one object referencing itself.
+  def constant[A](a: A): MyStream[A] = {
+    lazy val tail: MyStream[A] = Cons(() => a, () => tail)
+    tail
+  }
 
   def from(n: Int): MyStream[Int] = cons(n, from(n + 1))
 
-  def fibs = cons(0, cons(1, ))
+//  doh
+  def myFibs: MyStream[Int] = {
+    val s1 = cons(0, empty[Int])
+    val s2 = cons(1, empty[Int])
+    def go(x1: MyStream[Int], x2: MyStream[Int]): MyStream[Int] = {
+      lazy val Cons(h1, _) = x1
+      lazy val Cons(h2, _) = x2
+      lazy val x3: MyStream[Int] = cons(h1() + h2(), go(x2, x3))
+      x3
+    }
+    s1.append(s2).append(go(s1, s2))
+  }
+
+  val fibs = {
+    println('fibs)
+    def go(f0: Int, f1: Int): MyStream[Int] =
+      cons(f0, go(f1, f0+f1))
+    go(0, 1)
+  }
 }
