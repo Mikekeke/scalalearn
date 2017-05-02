@@ -7,6 +7,8 @@ object RunTest extends App {
   //no reaction,since it has auto generated companion with apply()
   val n1 = CasePrivate(1, "dsd")
   println(n1)
+  // this will fail tho
+//  val n1Err = new CasePrivate(1, "dsd")
 
   // instance created by companion object
   val n2 = RegularPrivate(2)

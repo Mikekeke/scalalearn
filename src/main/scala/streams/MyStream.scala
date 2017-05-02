@@ -128,7 +128,6 @@ object MyStream {
   }
 
   val fibs = {
-    println('fibs)
     def go(f0: Int, f1: Int): MyStream[Int] =
       cons(f0, go(f1, f0+f1))
     go(0, 1)
