@@ -6,6 +6,7 @@ import scala.annotation.tailrec
   * Created by ibes on 02.05.17.
   */
 trait RNG {
+
   def nextInt: (Int, RNG)
   def nonNegativeInt: (Int, RNG)
   def myNonNegativeInt: (Int, RNG)
@@ -53,5 +54,33 @@ object RNG {
     ((d, i), r)
   }
 
-  def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
+  def double3(rng: RNG): ((Double, Double, Double), RNG) = {
+    val (d1, r1) = double(rng)
+    val (d2, r2) = double(r1)
+    val (d3, r3) = double(r2)
+    ((d1, d2, d3), r3)
+  }
+
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    var resultList = new scala.collection.mutable.ListBuffer[Int]()
+    def go(rand: RNG, cnt: Int): (List[Int], RNG) = {
+      val(i, r) = rand.nextInt
+      if (cnt > 0) {
+        resultList += i
+        go(r, cnt - 1)
+      } else {
+        (resultList.toList, r)
+      }
+    }
+    go(rng, count)
+  }
+
+  type Rand[+A] = RNG => (A, RNG)
+  val int: Rand[Int] = _.nextInt
+  def unit[A](a: A): Rand[A] = rng => (a, rng)
+  def map[A, B](s: Rand[A])(f: A => B): Rand[B] =
+    rng => {
+      val (a, rng2) = s(rng)
+      (f(a), rng2)
+    }
 }
