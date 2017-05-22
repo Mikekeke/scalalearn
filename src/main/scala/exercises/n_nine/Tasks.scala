@@ -74,6 +74,17 @@ object Tasks {
     case x => List(x)
   }
 
-  def compress1[T](l: List[T]) = l.foldLeft("")()
+  def compress1[T](l: List[T]) = l.foldRight(List(l.last))((x, b) => if (x.equals(b.head)) b else x :: b)
+
+  def compress[T](l: List[T]) =
+    l.foldRight(List.empty[T])((x, z) => if (z.isEmpty || x != z.head) x :: z else z)
+
+  def compressTailrec[T](l: List[T]) = {
+    def go(ls: List[T], acc: List[T]): List[T] = ls match {
+      case Nil => acc.reverse
+      case x :: xs => go(xs.dropWhile(_ == x), x :: acc)
+    }
+    go(l, List.empty[T])
+  }
 
 }
