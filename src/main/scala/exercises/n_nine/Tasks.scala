@@ -1,5 +1,7 @@
 package exercises.n_nine
 
+import scala.Int
+
 /**
   * Created by Mikekeke on 22-May-17.
   */
@@ -33,10 +35,40 @@ object Tasks {
       case Nil => n
       case _ :: xs => go(n + 1, xs)
     }
+
     go(0, l)
   }
 
-  def lengthViaFold[T](l: List[T]) =
-    l.foldLeft(0)((x, _) => x + 1)
+  def lengthViaFold[T](l: List[T]) = l.foldLeft(0)((x, _) => x + 1)
+
+  def reverse[T](l: List[T]): List[T] = {
+    def go(l1: List[T], acc: List[T]): List[T] = l1 match {
+      case Nil => acc
+      case _ => go(l1.tail, l1.head :: acc)
+    }
+
+    go(l, List.empty[T])
+  }
+
+  def isPalindrome[T](l: List[T]): Boolean = {
+    def go(ls: List[T], prev: Boolean): Boolean = {
+      if (ls.isEmpty || ls.length == 1) true
+      else if(prev) go(ls.tail.init, ls.head == ls.last)
+      else false
+    }
+    go(l, true)
+  }
+
+  def flatten(l: List[Any]): List[Any] = {
+    def go(x: Any, acc: List[Any]): List[Any] = {
+//      println(x)
+      x match {
+        case Nil => println(1); acc
+        case x1: Int => println(2); x1 :: acc
+        case l1: List[Any] => go(l1.head, acc) :: go(l1.tail, acc)
+      }
+    }
+    go(l, List.empty[Any])
+  }
 
 }
