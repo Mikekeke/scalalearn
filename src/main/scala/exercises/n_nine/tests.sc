@@ -13,3 +13,5 @@ isPalindrome(palindrome)
 
 val toFlatten: List[Any] = List(List(1, 1), 2, List(3, List(5, 8)))
 flatten(toFlatten)
+val toCompress = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+compress1(toCompress)

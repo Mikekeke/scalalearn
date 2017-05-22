@@ -53,22 +53,27 @@ object Tasks {
   def isPalindrome[T](l: List[T]): Boolean = {
     def go(ls: List[T], prev: Boolean): Boolean = {
       if (ls.isEmpty || ls.length == 1) true
-      else if(prev) go(ls.tail.init, ls.head == ls.last)
+      else if (prev) go(ls.tail.init, ls.head == ls.last)
       else false
     }
+
     go(l, true)
   }
 
   def flatten(l: List[Any]): List[Any] = {
-    def go(x: Any, acc: List[Any]): List[Any] = {
-//      println(x)
-      x match {
-        case Nil => println(1); acc
-        case x1: Int => println(2); x1 :: acc
-        case l1: List[Any] => go(l1.head, acc) :: go(l1.tail, acc)
-      }
+    def go(x: Any, acc: List[Any]): List[Any] = x match {
+      case Nil => acc
+      case x1: Int => x1 :: acc
+      case l1: List[Any] => go(l1.head, acc) ++ go(l1.tail, acc)
     }
     go(l, List.empty[Any])
   }
+
+  def flattenViaFlatMap(l: List[Any]): List[Any] = l flatMap {
+    case ls: List[_] => flattenViaFlatMap(ls)
+    case x => List(x)
+  }
+
+  def compress1[T](l: List[T]) = l.foldLeft("")()
 
 }
