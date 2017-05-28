@@ -87,4 +87,19 @@ object Tasks {
     go(l, List.empty[T])
   }
 
+  def pack(l: List[String]): List[List[String]] = l match {
+    case Nil => Nil
+    case x :: _ =>
+      val (xs, rest) = l span(_ == x)
+      xs :: pack(rest)
+  }
+
+  def encode(l: List[String]): List[(Int, String)] = pack(l).map(ls => (ls.length, ls.head))
+
+  def encodeModified(l: List[String]) =
+    pack(l) map (l => if (l.length == 1) l.head else l)
+
+  def decode(l: List[(Int, Symbol)]): List[Symbol] = {
+    l flatMap {case (num, symbol) => List.fill(num)(symbol)} //  or  l flatMap (t => List.fill(t._1)(t._2))
+  }
 }
