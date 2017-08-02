@@ -12,6 +12,9 @@ trait Concat[T] {
 }
 
 object Concat {
+
+  def apply[T](implicit cc: Concat[T]): Concat[T] = cc
+
   implicit object ConcatInt extends Concat[Int] {
     override def makeTogether(a: Int, b: Int): String = (a * 10 + b).toString
   }
@@ -38,7 +41,10 @@ object TypeClasses extends App{
 //  def concat[T](a: T, b: T)(implicit  cc: Concat[T]): T = cc.makeTogether(a,b)
   def concat[T: Concat](a: T, b: T): String = implicitly[Concat[T]].makeTogether(a,b)
 
+  // look how cool this shit cos of Concat.apply()!
+  def concat2[T: Concat](a: T, b: T): String = Concat[T].makeTogether(a,b)
+
   println(concat(1,2))
   println(concat("a","b"))
-  println(concat(true,false))
+  println(concat2(true,false))
 }
