@@ -9,8 +9,9 @@ val r = new Random()
 def f1(r: Long) = Future {
   if (r > 10) r else throw new IllegalStateException("wrong")
 }
-def inFuture = f1(r.nextInt(30
-)).map(res => {
+val inFuture =
+  f1(r.nextInt(1000))
+  .map(res => {
   println("Future came")
   res > 15
 })
