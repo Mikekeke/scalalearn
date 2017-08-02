@@ -1,7 +1,7 @@
 package my
 
 /*
- Some examples:
+ Some !good! examples:
  https://blog.scalac.io/2017/04/19/typeclasses-in-scala.html
  */
 
