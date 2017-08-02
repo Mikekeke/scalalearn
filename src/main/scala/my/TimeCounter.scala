@@ -9,11 +9,11 @@ object TimeCounter {
   val helpCommand = Array("-h", "-help")
 
   def main(args: Array[String]): Unit = {
-//    require(args.nonEmpty, "Type the time. Pls. -h for help")
+    require(args.nonEmpty, "Type the time. Pls. -h for help")
 //    println(args.mkString(" and "))
 
-        val times = "11:20-12:54,13:00-14:10"
-//    val times = args(0)
+//        val times = "11:20-12:54,13:00-14:10"
+    val times = args(0)
 
     if (helpCommand contains times) {
       println("Type time in format hh:mm-hh-mm, comma separated.  -h for help")

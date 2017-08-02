@@ -102,4 +102,23 @@ object Tasks {
   def decode(l: List[(Int, Symbol)]): List[Symbol] = {
     l flatMap {case (num, symbol) => List.fill(num)(symbol)} //  or  l flatMap (t => List.fill(t._1)(t._2))
   }
+
+  def encodeDirect(l: List[String]): List[(Int, String)] = l match {
+    case Nil => Nil
+    case other: List[String] =>
+      val(chunk, rest) = other.span(_ == other.head)
+      (chunk.length, chunk.head) :: encodeDirect(rest)
+  }
+
+  def duplicate(l: List[Symbol]) = l flatMap(x => List(x,x))
+
+  def duplicateN(n: Int, l: List[Symbol]) = l flatMap(x => List.fill(n)(x))
+
+  def dropEveryN(n: Int, l: List[Symbol]): List[Symbol] = l match {
+    case list if list.length >= n =>
+      val (chunk, rest) = list.splitAt(n - 1)
+      chunk ++ dropEveryN(n, rest.tail)
+    case other => other
+
+  }
 }
