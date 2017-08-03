@@ -1,8 +1,5 @@
 package my
 
-/**
-  * Created by ibes on 29.03.17.
-  */
 object Calc extends App{
   type Calc = String => Double
   val test = "3 4 + 2 *".split(" ")
