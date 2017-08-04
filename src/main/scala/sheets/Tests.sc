@@ -1,3 +1,5 @@
+// http://blog.tmorris.net/posts/scala-exercises-for-beginners/
+
 object Exercises {
   def succ(n: Int) = n + 1
 
@@ -48,6 +50,33 @@ object Exercises {
     case Nil => Nil
     case h :: t => append(f(h), concatMap(t)(f))
   }
+
+  def myMaximum(x: List[Int]): Int = {
+    require(x.nonEmpty, new IllegalArgumentException("Empty list"))
+    x match {
+      case h :: Nil => h
+      case h :: t =>
+        if (h > t.head) myMaximum(h :: t.tail)
+        else myMaximum(t)
+    }
+  }
+
+  def betterMaximum(x: List[Int]): Int = {
+    require(x.nonEmpty, new IllegalArgumentException("Empty list"))
+    x match {
+      case h :: Nil => h
+      case a :: b :: rest => betterMaximum((if (a > b) a else b) :: rest)
+    }
+  }
+
+  def reverse[A](x: List[A]): List[A] = {
+    def addBackwards(from: List[A], to: List[A]): List[A] = from match {
+      case Nil => to
+      case h :: t => addBackwards(t, h :: to)
+    }
+    addBackwards(x, List.empty[A])
+  }
+
 }
 
 val l1 = List('a, 'b, 'c)
@@ -55,6 +84,9 @@ val l2 = List('d, 'e)
 val l3 = List('f, 'g)
 Exercises.concat(List(l1, l2, l3))
 Exercises.concatMap(l1)(x => List(x,x,x))
+Exercises.myMaximum(List(1,5,6,7,8,4,5,67,8))
+Exercises.betterMaximum(List(1,5,6,7,8,4,5,67,8))
+Exercises.reverse(List(1,2,3,4,5,6))
 
 
 
