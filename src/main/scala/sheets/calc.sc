@@ -1,4 +1,4 @@
-val test = "4 1 3 4 + 2 *".split(" ")
+val test = "4 1 3 4 + 2 *".split(" ") // this is wrong notation actually
 
 def foldingFunction (stack: List[Double], a: String): List[Double] = stack match {
   case List() => a.toDouble :: stack  // or Nil, if you prefer
