@@ -1,5 +1,7 @@
 package exercises.n_nine
 
+import jdk.nashorn.internal.runtime.linker.LinkerCallSite
+
 import scala.Int
 
 /**
@@ -121,4 +123,29 @@ object Tasks {
     case other => other
 
   }
+
+  def splitMy[T](n: Int, l: List[T]): (List[T], List[T]) = {
+    def go(n: Int, left: List[T], right: List[T]): (List[T], List[T]) = {
+      if (n == 0) (left.reverse, right)
+      else right match {
+        case Nil => (left.reverse, right)
+        case h :: t => go(n - 1, h :: left, t)
+      }
+    }
+    go(n, List.empty, l)
+  }
+
+  def splitBetter[T](n: Int, l: List[T]): (List[T], List[T]) = {
+    def go(pos: Int, left: List[T], right: List[T]): (List[T], List[T]) = {
+      (pos, right) match {
+        case (_, Nil) => (left.reverse, right)
+        case (0, list) => (left.reverse, list)
+        case (x, h :: t) => go(x - 1, h :: left, t)
+      }
+    }
+    go(n, List.empty, l)
+  }
+
+
+
 }
