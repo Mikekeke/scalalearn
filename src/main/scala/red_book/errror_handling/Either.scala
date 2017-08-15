@@ -1,4 +1,4 @@
-package errror_handling
+package red_book.errror_handling
 
 sealed trait Either[+E, +A] {
 //  def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C):

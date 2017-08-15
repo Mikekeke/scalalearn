@@ -1,4 +1,4 @@
-package streams
+package red_book.streams
 
 /**
   * Created by ibes on 13.04.17.

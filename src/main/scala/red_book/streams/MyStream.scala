@@ -1,7 +1,7 @@
-package streams
+package red_book.streams
 
 import scala.annotation.tailrec
-import streams.MyStream.{cons, empty}
+import red_book.streams.MyStream.{cons, empty}
 
 sealed trait MyStream[+A] {
   def headOption: Option[A] = this match {

@@ -146,6 +146,19 @@ object Tasks {
     go(n, List.empty, l)
   }
 
+  def mySlice1[T](start: Int, end: Int, list: List[T]): List[T] =
+    list.take(end).drop(start)
+
+  def mySlice2[T](start: Int, end: Int, list: List[T]): List[T] = {
+    (start, end, list) match {
+      case (0, 0, _) => Nil
+      case (0, 0, l) if l.nonEmpty => list
+      case (st, en, h :: t) if st > 0 => mySlice2(st -1, en - 1, t)
+      case (0, en, h :: t) if en > 0 => h :: mySlice2(start, en - 1, t)
+    }
+
+  }
+
 
 
 }

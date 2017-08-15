@@ -1,4 +1,4 @@
-package errror_handling
+package red_book.errror_handling
 
 
 sealed trait Option[+A] {

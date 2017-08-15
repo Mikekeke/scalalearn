@@ -1,6 +1,6 @@
-package state_control
+package red_book.state_control
 
-import state_control.RNG.SimpleRNG
+import red_book.state_control.RNG.SimpleRNG
 
 /**
   * Created by ibes on 02.05.17.

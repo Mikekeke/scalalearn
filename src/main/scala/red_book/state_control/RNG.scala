@@ -1,4 +1,4 @@
-package state_control
+package red_book.state_control
 
 import scala.annotation.tailrec
 

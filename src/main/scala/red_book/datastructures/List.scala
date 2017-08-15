@@ -1,4 +1,4 @@
-package datastructures
+package red_book.datastructures
 
 sealed trait List[+A]
 

@@ -1,4 +1,4 @@
-import state_control.{RNG, SimpleRNG}
+import red_book.state_control.{RNG, SimpleRNG}
 
 val rng = SimpleRNG(13)
 val (int1, rng1) = rng.nextInt
