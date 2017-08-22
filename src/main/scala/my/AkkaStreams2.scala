@@ -1,48 +1,79 @@
 package my
 
-import javafx.beans.{InvalidationListener, Observable}
-import javafx.scene.control.TextField
-import javax.swing.event.{ChangeEvent, ChangeListener}
+import akka.actor.{ActorRef, ActorSystem}
+import akka.stream.scaladsl.{Balance, Flow, GraphDSL, Merge, Sink, Source}
+import akka.stream.{ActorMaterializer, FlowShape, OverflowStrategy}
+import akka.{Done, NotUsed}
 
-import akka.actor.{Actor, ActorRef, ActorSystem, Props}
-
-import scalafx.application.JFXApp
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.language.implicitConversions
+import scalafx.Includes._
 import scalafx.application.JFXApp.PrimaryStage
-import scalafx.beans.property.StringProperty
+import scalafx.application.{JFXApp, Platform}
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.{Scene, layout}
-import scalafx.scene.control.{Button, Label, TextArea, TextInputControl}
-import scalafx.scene.layout.{BorderPane, VBox}
+import scalafx.scene.Scene
+import scalafx.scene.control.{Button, TextArea}
+import scalafx.scene.layout.VBox
 
 
-class TestA extends Actor {
-  override def receive = {
-    case any => println(any)
-  }
-}
+object AkkaStreams2 extends JFXApp {
+  implicit val system = ActorSystem("test")
+  implicit val materializer = ActorMaterializer()
 
-trait ImplConversions {
-  implicit def funToInvalidationListener(f: Observable => Unit) =
-    new InvalidationListener {
-      override def invalidated(observable: Observable): Unit = {
-        println('invalidaying)
-        f(observable)
-      }
-    }
-}
-
-object AkkaStreams2 extends JFXApp with ImplConversions{
-  val system = ActorSystem("test")
-  val ref = system.actorOf(Props[TestA])
-
-  def mkActorListener[T](actorRef: ActorRef)(s: => T): Observable => Unit =
-    (_: Observable) => actorRef ! s
-
-  val inTextArea = new TextArea {
-    text.delegate.addListener(mkActorListener(ref)(text.value))
-  }
+  val inTextArea = new TextArea()
 
   val outTextArea = new TextArea()
+
+  def clearIO(): Unit = {
+    inTextArea.text = ""
+    outTextArea.text = ""
+  }
+
+  def button[T](text: String)(action: => T) = new Button(text) {
+    onAction = handle {
+      action
+    }
+  }
+
+  // TODO: submit on Enter
+  def mkActorListener[T](txtArea: TextArea, actorRef: ActorRef) = {
+    txtArea.textProperty().addListener(obs => if (txtArea.getText.nonEmpty) actorRef ! txtArea.text.value)
+  }
+
+  val source = Source
+    .actorRef(bufferSize = 100, overflowStrategy = OverflowStrategy.dropTail)
+    .mapMaterializedValue(ref => mkActorListener(inTextArea, ref))
+
+  val sink: Sink[String, Future[Done]] = Sink.foreachParallel(3)(v => Platform.runLater {
+    outTextArea.text.value = outTextArea.delegate.getText + s"$v\n"
+  })
+
+  val longComputation = Flow[String].map(s => {
+    val r = new scala.util.Random()
+    println("Flow thread: " + Thread.currentThread().getName)
+    Thread.sleep(r.nextInt(3000) + 500)
+    "Computed: " + s
+  })
+
+  def balancer[In, Out](worker: Flow[In, Out, Any], workerCount: Int): Flow[In, Out, NotUsed] = {
+    import akka.stream.scaladsl.GraphDSL.Implicits._
+
+    Flow.fromGraph(GraphDSL.create() { implicit b =>
+      val balancer = b.add(Balance[In](workerCount, waitForAllDownstreams = true))
+      val merge = b.add(Merge[Out](workerCount))
+
+      (1 to workerCount).map(_ => balancer ~> worker.async ~> merge)
+
+      FlowShape(balancer.in, merge.out)
+    })
+  }
+
+  //  source via longComputation to sink run() // sequential - flow sequential by default
+  source via balancer(longComputation, 4) to sink run() // parallel
+
+  //  Source(1 to 10).map(_.toString) via balancer(longComputation, 4) to sink run() // test
+
 
   stage = new PrimaryStage {
     scene = new Scene(400, 300) {
@@ -52,7 +83,7 @@ object AkkaStreams2 extends JFXApp with ImplConversions{
         padding = Insets(10)
         alignment = Pos.Center
         children = Seq(
-          new Button("Test"),
+          button("Clear")(clearIO()),
           inTextArea,
           outTextArea
         )
