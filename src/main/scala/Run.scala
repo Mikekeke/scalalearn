@@ -4,6 +4,7 @@ import scala.annotation.tailrec
   * Created by ibes on 21.02.17.
   */
 object Run {
+  // TODO: wrong!
   private def fib(n: Int): Int = {
     @tailrec def go(current: Int, next: Int, iter: Int): Int =
       if (iter ==  1) current
@@ -29,18 +30,11 @@ object Run {
     go(n, 1)
   }
 
-  private def formatFactorial(x: Int) = {
-    s"The factorial of $x is ${factorial(x)}"
-  }
 
-  private def formatResult(name: String, x: Int, f: Int => Int) = {
-    s"The $name of $x is ${f(x)}"
-  }
 
   def main(args: Array[String]): Unit = {
     println(formatAbs(-42))
-    println(formatFactorial(7))
-    println(formatResult("fib number", 7, fib))
+    println(fib(1))
 
   }
 
