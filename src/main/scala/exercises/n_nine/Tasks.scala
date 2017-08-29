@@ -164,6 +164,6 @@ object Tasks {
     case 0 => list
     case _ =>
       val(l1, l2) = list.splitAt(if (n > 0) n else list.length + n)
-      l2 ++ l1
+      l2 ::: l1
   }
 }
