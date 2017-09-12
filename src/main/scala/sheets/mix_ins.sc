@@ -60,6 +60,14 @@ trait Anger extends VoiceEngine {
 class Assistant {
   this: VoiceEngine =>
   def greetings(): Unit = say("Hello")
+
+  // !could be!
+//  engine: VoiceEngine =>
+//  def greetings(): Unit = engine.say("Hello")
+
+  // !could also be!
+//  engine: VoiceEngine =>
+//  def greetings(): Unit = say("Hello")
 }
 
 val calmAssistant = new Assistant with WomanVoice {
