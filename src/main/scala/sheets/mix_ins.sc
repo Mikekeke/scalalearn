@@ -42,6 +42,7 @@ case class SpeechProducer(version: Int) {
 }
 
 trait VoiceEngine {
+
   val speaker: SpeechProducer
   def say(s: String): Unit
 }
@@ -70,3 +71,41 @@ val madAssistant = new Assistant with WomanVoice with Anger {
   val speaker = SpeechProducer(3)
 }
 madAssistant.greetings()
+
+
+// Ex: trait so it can only be subclassed by a certain type
+class Spaceship
+class SeaShip
+
+trait WarpCore {
+  this: Spaceship =>
+}
+
+// class BadShip extends SeaShip with WarpCore // illegal inheritance
+class GoodShip extends Spaceship with WarpCore
+
+// Ex: trait can only be mixed into a type that has a specific method
+trait WarpCore2 {
+  this: {
+    def coreBoostable: Boolean
+    def startWarpCore: Unit
+  } =>
+
+  def boost() = if (coreBoostable) println("BOOOOST!!!") else println("Cant boost")
+}
+
+class ShipOne extends  Spaceship with WarpCore2 {
+  def coreBoostable = true
+  def startWarpCore: Unit = println("Core started")
+}
+
+class PredefSpaceShip {
+  def coreBoostable = false
+  def startWarpCore: Unit = println("Predef core started")
+}
+
+// class ShipTwo extends Spaceship with WarpCore2  // illegal inheritance
+class ShipThree extends PredefSpaceShip with WarpCore2
+new ShipOne().boost()
+new ShipThree().boost()
+
