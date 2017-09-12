@@ -38,13 +38,16 @@ object TypeClasses extends App{
   implicit val concatBoolean: Concat[Boolean] =
     (a: Boolean, b: Boolean) => s"${a.toString}&${b.toString}"
 
-//  def concat[T](a: T, b: T)(implicit  cc: Concat[T]): T = cc.makeTogether(a,b)
-  def concat[T: Concat](a: T, b: T): String = implicitly[Concat[T]].makeTogether(a,b)
+  // full
+  def concat0[T](a: T, b: T)(implicit  cc: Concat[T]): String = cc.makeTogether(a,b)
 
-  // look how cool this shit cos of Concat.apply()!
+  // shorter
+  def concat1[T: Concat](a: T, b: T): String = implicitly[Concat[T]].makeTogether(a,b)
+
+  // shortest thanks to Concat.apply()
   def concat2[T: Concat](a: T, b: T): String = Concat[T].makeTogether(a,b)
 
-  println(concat(1,2))
-  println(concat("a","b"))
+  println(concat0(1,2))
+  println(concat1("a","b"))
   println(concat2(true,false))
 }

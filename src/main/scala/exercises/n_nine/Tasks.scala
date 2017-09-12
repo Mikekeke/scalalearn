@@ -156,9 +156,14 @@ object Tasks {
       case (st, en, h :: t) if st > 0 => mySlice2(st -1, en - 1, t)
       case (0, en, h :: t) if en > 0 => h :: mySlice2(start, en - 1, t)
     }
-
   }
 
 
 
+  def myRotate1[T](n:Int, list: List[T]) = n match {
+    case 0 => list
+    case _ =>
+      val(l1, l2) = list.splitAt(if (n > 0) n else list.length + n)
+      l2 ::: l1
+  }
 }

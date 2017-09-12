@@ -12,3 +12,23 @@ val one = new Fib[Unit, Unit]
 val x = one.succ.succ.succ.succ.succ.succ.succ.succ.succ.succ.succ.succ.succ.succ
 x.value
 
+
+
+// ************************
+//import cats.Show
+//import cats.syntax.show._
+//
+//type Sum[x] = AnyRef{type original = x}
+//def Sum[x](x: x): Sum[x] = x.asInstanceOf[Sum[x]]
+//implicit class SumOps[x](sum: Sum[x]){
+//  def getSum: x = sum.asInstanceOf[x]
+//}
+//
+//implicit def showSum[x: Show]: Show[Sum[x]] = (x: Sum[x]) => s"Sum(${x.getSum.show})"
+//implicit val showInt: Show[Int] = _.toString
+//
+//1.show
+//1.toString
+//Sum(1).show
+//Sum(1).toString
+
