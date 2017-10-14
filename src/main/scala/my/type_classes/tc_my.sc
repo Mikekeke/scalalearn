@@ -1,22 +1,22 @@
-object ListAddon {
-  trait Prt[T <: List[_]] {
-    def prt(l : T): Unit
+object PrintAddon {
+  trait SmthAndPrint[T] {
+    def excecute(l : T): String
   }
 
-  object Prt {
-    def apply[T <: List[_]](implicit printer: Prt[T]) = printer
+  implicit object TplList extends SmthAndPrint[List[(Int, Int)]] {
+    override def excecute(l: List[(Int, Int)]): String =
+      l.map { case (a,b) => a + b} mkString("-")
   }
 
-  implicit object TplList extends Prt[List[(Int, Int)]] {
-    override def prt(l: List[(Int, Int)]): Unit =
-      l.map { case (a,b) => a + b} foreach println
-  }
+  implicit val StringPrinter: SmthAndPrint[String] =
+    (s: String) => s"!$s!"
 
-  implicit class ListUtil[T <: List[_]](ls: T) {
-    def >>(implicit printer: Prt[T]): Unit = printer.prt(ls)
-//    def >>>[T: Prt] = Prt[T].prt() //doesn't work
+  implicit class PrtUtil[T](x: T) {
+    def doSmth(implicit printer: SmthAndPrint[T]): String = printer.excecute(x)
   }
 }
 
-import ListAddon._
-List(1 -> 2, 2 -> 4) >>
+import PrintAddon._
+List(1 -> 2, 2 -> 4) doSmth
+
+"test" doSmth
