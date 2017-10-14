@@ -1,11 +1,11 @@
-package my
+package my.type_classes
 
 /*
  Some !good! examples:
  https://blog.scalac.io/2017/04/19/typeclasses-in-scala.html
  */
 
-import annotation.implicitNotFound
+import scala.annotation.implicitNotFound
 @implicitNotFound("CUSTOM no member of type class NumberLike in scope for ${T}")
 trait Concat[T] {
   def makeTogether(a: T, b:T): String
