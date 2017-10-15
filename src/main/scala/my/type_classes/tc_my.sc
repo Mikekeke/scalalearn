@@ -17,6 +17,5 @@ object PrintAddon {
 }
 
 import PrintAddon._
-List(1 -> 2, 2 -> 4) doSmth
-
+List(1 -> 2, 2 -> 4) doSmth; // if remove ; compiler looks like thinks that '"test" doSmth' passed as argument to 1st doSmth
 "test" doSmth

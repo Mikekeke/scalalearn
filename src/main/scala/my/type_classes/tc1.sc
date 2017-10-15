@@ -15,3 +15,4 @@ def default[T : Default] = implicitly[Default[T]].value
 default[List[List[Int]]]
 default[List[Int]]
 default[Int]
+
