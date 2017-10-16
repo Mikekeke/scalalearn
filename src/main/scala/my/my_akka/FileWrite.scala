@@ -32,8 +32,16 @@ object FileWrite extends App{
       .map(s => ByteString(s + "\n"))
       .toMat(FileIO.toPath(Paths.get(fileName)))(Keep.right)
 
+//  No Keep.right
+  def fileSink_2_forComparison(fileName: String): ((NotUsed, Future[IOResult]) => Nothing) => Sink[String, Nothing] =
+    Flow[String]
+      .map(s => ByteString(s + "\n"))
+      .toMat(FileIO.toPath(Paths.get(fileName)))
 
-//  source via futureFlow runWith fileSink("akka_write.txt") // can't "onComplete"
-  source via futureFlow runWith fileSink_2 ("akka_write.txt") onComplete(_ => system.terminate())
+
+  if (true)
+    source via futureFlow runWith fileSink_2 ("akka_write.txt") onComplete(_ => system.terminate())
+  else
+    source via futureFlow runWith fileSink("akka_write.txt") // can't "onComplete"
 
 }
