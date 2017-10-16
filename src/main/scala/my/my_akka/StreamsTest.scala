@@ -1,4 +1,4 @@
-package my
+package my.my_akka
 
 import java.awt.Dimension
 import java.awt.event.{MouseAdapter, MouseEvent}

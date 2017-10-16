@@ -1,4 +1,4 @@
-package my
+package my.my_akka
 
 import akka.actor.{ActorRef, ActorSystem}
 import akka.stream.scaladsl.{Balance, Flow, GraphDSL, Merge, Sink, Source}
