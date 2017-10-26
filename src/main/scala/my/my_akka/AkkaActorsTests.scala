@@ -1,7 +1,7 @@
-package my
+package my.my_akka
 
 import java.util.Calendar
-import java.util.concurrent.{ExecutorService, Executors}
+import java.util.concurrent.Executors
 
 import akka.actor.{Actor, ActorSystem, Props}
 

@@ -26,10 +26,20 @@ object Tasks {
     else if (n > 1) nth(n - 1, l.tail)
     else l.head
 
+  def nthHLike[T](n: Int, l: List[T]): T = (n, l) match {
+    case (idx, xs) if idx < 0 || xs.isEmpty => throw new NoSuchElementException
+//    case (_, ) => throw new IllegalArgumentException
+    case (0, h :: _   ) => h
+    case (_, _ :: tail) => nthRecursive(n - 1, tail)
+  }
+
   def nthRecursive[A](n: Int, ls: List[A]): A = (n, ls) match {
-    case (1, h :: _) => h
-    case (n1, _ :: tail) => nthRecursive(n1 - 1, tail)
-    case (_, Nil) => throw new NoSuchElementException
+      // gonna spin all fckn list on -n!
+    case (0, h :: _   ) => h
+    case (n, _ :: tail) =>
+      println("rec call")
+      nthRecursive(n - 1, tail)
+    case (_, Nil      ) => throw new NoSuchElementException
   }
 
   def length[T](l: List[T]): Int = {
