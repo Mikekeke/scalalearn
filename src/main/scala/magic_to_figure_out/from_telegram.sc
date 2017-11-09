@@ -32,3 +32,33 @@ x.value
 //Sum(1).show
 //Sum(1).toString
 
+
+// ************************
+//simplicitly
+//в 4.2 This means that c1’s type can be instantiated
+// through widening or polymorphic parameter instantiation to be c2’s type
+
+class Foo{
+  override def toString = "Foo"
+}
+class FooSpec extends Foo{
+  override def toString = "FooSpec"
+}
+
+
+implicit val foo: Foo = new Foo
+implicit val fooSpec: FooSpec = new FooSpec
+
+implicitly[Foo]
+
+implicit val fooShow: Foo => String = _ => "foo"
+implicit val fooSpecShow: FooSpec => String = _ => "fooSpec"
+
+implicitly[FooSpec => String].apply(implicitly)
+
+implicit val fooFunc1: Foo => List[Foo] = _ => List(new Foo, new Foo)
+implicit val fooFunc2: Foo => List[FooSpec] = _ => List(new FooSpec, new FooSpec)
+implicit val fooFunc3: FooSpec => List[Foo] = _ => List(new FooSpec, new Foo)
+implicit val fooFunc4: FooSpec => List[FooSpec] = _ => List(new FooSpec)
+
+implicitly[FooSpec => List[Foo]].apply(implicitly)
