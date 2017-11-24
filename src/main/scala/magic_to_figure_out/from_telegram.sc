@@ -62,3 +62,26 @@ implicit val fooFunc3: FooSpec => List[Foo] = _ => List(new FooSpec, new Foo)
 implicit val fooFunc4: FooSpec => List[FooSpec] = _ => List(new FooSpec)
 
 implicitly[FooSpec => List[Foo]].apply(implicitly)
+
+
+//  как можно добраться до объекта-компаньона, если в метод передан тип
+trait Companion[A] {
+  def foo: String
+}
+
+case class Dummy()
+object Dummy extends Companion[Dummy] {
+  implicit def companion:Companion[Dummy] = this
+  def foo: String = "Dummy string"
+}
+
+case class OtherShit()
+object OtherShit extends Companion[OtherShit] {
+  implicit def companion:Companion[OtherShit] = this
+  def foo: String = "OtherShit string"
+}
+
+def foo[A](implicit c: Companion[A]) = println(c.foo)
+
+foo[Dummy]
+foo[OtherShit]
