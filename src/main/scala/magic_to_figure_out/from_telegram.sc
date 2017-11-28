@@ -66,22 +66,23 @@ implicitly[FooSpec => List[Foo]].apply(implicitly)
 
 //  как можно добраться до объекта-компаньона, если в метод передан тип
 trait Companion[A] {
-  def foo: String
+  def foo1: String
 }
 
 case class Dummy()
 object Dummy extends Companion[Dummy] {
   implicit def companion:Companion[Dummy] = this
-  def foo: String = "Dummy string"
+  def foo1: String = "Dummy string"
 }
 
-case class OtherShit()
+// could be class ot trait (they define type), but not object
+trait OtherShit
 object OtherShit extends Companion[OtherShit] {
   implicit def companion:Companion[OtherShit] = this
-  def foo: String = "OtherShit string"
+  def foo1: String = "OtherShit string"
 }
 
-def foo[A](implicit c: Companion[A]) = println(c.foo)
+def foo1[A](implicit c: Companion[A]) = println(c.foo1)
 
-foo[Dummy]
-foo[OtherShit]
+foo1[Dummy]
+foo1[OtherShit]
