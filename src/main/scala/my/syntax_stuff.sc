@@ -19,6 +19,8 @@ someStr stringify None
 
 object ThingsDoer {
   def apply[A](f: => A) = f
+  // or
+//  def apply[A](f: A) = f
 }
 
 ThingsDoer {
