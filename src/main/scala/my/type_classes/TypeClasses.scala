@@ -16,7 +16,7 @@ object Concat {
   def apply[T](implicit cc: Concat[T]): Concat[T] = cc
 
   implicit object ConcatInt extends Concat[Int] {
-    override def makeTogether(a: Int, b: Int): String = (a * 10 + b).toString
+    def makeTogether(a: Int, b: Int): String = (a * 10 + b).toString
   }
 
   implicit object ConcatString extends Concat[String] {
