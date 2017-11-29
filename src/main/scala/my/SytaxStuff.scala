@@ -34,5 +34,4 @@ object SyntaxStuff {
     println(userDir1)
     println(userDir1())
   }
-
 }
