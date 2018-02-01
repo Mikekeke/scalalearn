@@ -1,5 +1,8 @@
 package magic_to_figure_out
 
+//to remember: that was me who wrote that not commented part,
+// so this is not some working example or alike
+
 object DependentTypes extends App{
   trait OS
   class Linux extends OS
