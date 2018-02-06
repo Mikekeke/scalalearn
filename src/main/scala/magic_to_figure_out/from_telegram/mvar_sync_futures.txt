@@ -1,0 +1,30 @@
+Kirill Shelopugin, [05.02.18 20:08]
+[In reply to Oleg Nizhnik]
+Ага, а теперь мне надо линеаризовать относительно ключа, а делать по executor на ключ, сам понимаешь, не вариант. Ну ладно, придётся оставить как есть )
+
+Kirill Shelopugin, [05.02.18 20:08]
+[In reply to Oleg Nizhnik]
+Ага, а теперь мне надо линеаризовать относительно ключа, а делать по executor на ключ, сам понимаешь, не вариант. Ну ладно, придётся оставить как есть )
+
+Oleg Nizhnik, [05.02.18 20:21]
+[In reply to Kirill Shelopugin]
+ну тогда точно MVar
+
+val synchonizers = MVar(Map.empty[Map[String, MVar[Unit]])
+
+val result = synchronizer(key) flatMap sync(action)
+
+def synchronizer(key: String) =
+  for{
+     syncs <- synchronizers.take
+     s = syncs.get(key).getOrElse(MVar(()))
+  _ <- synchronizers.put(syncs +(key -> s)
+} yield sync
+
+
+def sync(action: => Future[A])(s: MVar[Unit]): Task[A] =
+ for{
+    _ <- s.take
+    res <- Task.deferFuture(action)
+    _ <- s.put(())
+} yield res
