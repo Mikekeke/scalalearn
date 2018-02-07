@@ -7,7 +7,7 @@ trait Observer[S] {
 }
 
 trait Subject[S] {
-  this: S =>
+  this: S => // reassigning `this`, line 12 won't compile without that
   private var observers: List[Observer[S]] = Nil
   def addObserver(observer: Observer[S]) = observers = observer :: observers
 
