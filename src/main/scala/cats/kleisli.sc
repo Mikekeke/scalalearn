@@ -10,7 +10,7 @@ def testWith(f: String => Option[Double]): List[Option[Double]] =
   testVals map f
 
 def testWithK(f: Kleisli[Option, String, Double]): List[Option[Double]] =
-testVals.map(s => f(s))
+  testVals.map(s => f(s))
 
 
 val intFromString: String => Option[Int] = s =>
@@ -19,13 +19,16 @@ val multByTwo: Int => Option[Double] = x => Some(x * 2.1)
 
 val t1: Kleisli[Option, String, Double] =
   Kleisli(multByTwo) compose Kleisli(intFromString)
-"t1 = " + tstFun(testWithK(t1))
+"t1 = " + (tstFun compose testWithK) (t1)
 
 val t2: String => Option[Double] = Option(_) >>= intFromString >>= multByTwo
-"t2 = " + tstFun(testWith(t2))
+"t2 = " + (tstFun compose testWith) (t2)
 
-val t3: String => Option[Double] = intFromString(_) flatMap multByTwo
+val t3: String => Option[Double] = Option(_) flatMap intFromString flatMap multByTwo
 "t3 = " + tstFun(testWith(t3))
+
+val t4: String => Option[Double] = intFromString(_) flatMap multByTwo
+"t4 = " + tstFun(testWith(t3))
 
 Option("112") >>= intFromString >>= multByTwo
 Option("1v2") >>= intFromString >>= multByTwo
