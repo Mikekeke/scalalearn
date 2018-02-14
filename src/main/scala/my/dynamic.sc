@@ -7,8 +7,15 @@ val dd = new Ping
 dd.ping
 dd.tesdt
 
+object TestD {
+  sealed trait TestType[A] {
+    def appl(ar: A): String
+  }
+
+  implicit val applString: TestType[String] = (s: String) => s"Test1: $s"
+}
+
 class TestD extends Dynamic{
-  def test1(s: String) = s"Test1: $s"
   def test2(x: Int) = x match {
     case 1 => "One!"
     case 2 => "Two!!"
@@ -16,12 +23,13 @@ class TestD extends Dynamic{
   }
 
   import reflect.runtime.universe._
+  import TestD._
 
   def applyDynamic[A : TypeTag](name: String)(arg: A): String = name match {
-    case "test1" if typeOf[A] =:= typeOf[String] =>
-      test1(arg.asInstanceOf[String])
     case "test2" if typeOf[A] =:= typeOf[String] && arg.asInstanceOf[String].forall(Character.isDigit) =>
-      test2(arg.asInstanceOf[String].toInt)
+      test2(arg.toString.toInt)
+    case "test1" if typeOf[A] =:= typeOf[String] =>
+      implicitly[TestType[A]].appl(arg)
     case _ => "Undefined"
   }
 }
@@ -31,8 +39,8 @@ t1.dd4("f")
 
 List(
   ("test1", "hello"),
-  ("test2", "2"),
-  ("test2", "1"),
-  ("test2", "10"),
+  ("test2", 2),
+  ("test2", 1),
+  ("test2", 3),
   ("test2", "fff")
 ) foreach {case (fst, snd) => println(t1.applyDynamic(fst)(snd))}
