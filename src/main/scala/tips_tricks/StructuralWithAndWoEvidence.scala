@@ -8,10 +8,10 @@ object StructuralWithAndWoEvidence extends App {
 
   // by @eld0727 (Alexey Otts)
   //  С evidence можно написать value class и тогда будет создан только один инстанс обёртки, у которого будет кешироваться получение метода через рефлексию.
-  //  А в твоём примере (см. ниже - прим. моё) на каждый вызов будет через рефлексию получаться нужный метод, так как каждый раз будет создаваться новый экземпляр обёртки
+  //  А в твоём примере (см. следующий пример - прим. моё) на каждый вызов будет через рефлексию получаться нужный метод, так как каждый раз будет создаваться новый экземпляр обёртки
 
-//  implicit class Ops[A, R](val a: A) extends AnyVal {
-//    def go(implicit ev: A <:< {def run(): R}): R = a.run()
+//  implicit class Ops[A](val a: A) extends AnyVal {
+//    def go[R](implicit ev: A <:< {def run(): R}): R = a.run()
 //  }
 
   //
@@ -20,7 +20,7 @@ object StructuralWithAndWoEvidence extends App {
 //    def go = env.run()
 //  }
 
-  // но вот так тоже работает
+//   но вот так тоже работает
   implicit class Ops[T](val env: {def run(): T}) extends AnyVal {
     def go = env.run()
   }
@@ -29,7 +29,7 @@ object StructuralWithAndWoEvidence extends App {
 //  Если скомпилится, то один раз для каждого класса
 //
 //  Alexey Otts, [15.02.18 12:19]
-//  Если эта функция вызывается очень часто, то конечно лучше сделать тайп класс
+//  Если эта функция вызывается очень часто, то, конечно, лучше сделать тайп класс
 
 
 
