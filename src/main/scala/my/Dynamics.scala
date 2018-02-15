@@ -1,4 +1,5 @@
 package my
+import scala.language.dynamics
 
 object Dynamics extends App {
   object TestD {
