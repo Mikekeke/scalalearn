@@ -22,11 +22,18 @@ object Concat {
   implicit object ConcatString extends Concat[String] {
     override def makeTogether(a: String, b: String): String = a + b
   }
+
+  object Impls {
+    implicit class ConcImpl[A : Concat](val value: A) {
+      def <+>(other: A): String = Concat[A].makeTogether(value, other)
+    }
+  }
 }
 
 
 object TypeClasses extends App{
   import Concat._
+
 
 //  full variant
 //  implicit val concatBoolean: Concat[Boolean] =
@@ -50,4 +57,7 @@ object TypeClasses extends App{
   println(concat0(1,2))
   println(concat1("a","b"))
   println(concat2(true,false))
+
+  import Concat.Impls._
+  println("a" <+> "cc")
 }

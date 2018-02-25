@@ -1,0 +1,32 @@
+Vladimir Sam, [22.02.18 13:21]
+может кто натыкался на либу для валидации с поддержкой асинхронных правил?
+
+Vladimir Sam, [22.02.18 13:22]
+на плее писали подобное, но там недостаточно функциональненько получалось и довольно толсто
+
+Alexandr Chigrinets, [22.02.18 13:24]
+Можно же внутри for-comprehension результаты тасков или фьюч скомпоновать через |@|
+
+Oleg Nizhnik, [22.02.18 13:25]
+[In reply to Vladimir Sam]
+Добрый вечер. Applicative[Nested[Task, Validated]]] вас устроит?
+
+Vladimir Sam, [22.02.18 13:28]
+идеально, спасибо)
+
+Vladimir Sam, [22.02.18 13:29]
+[In reply to Alexandr Chigrinets]
+хочу только тайпклассы подкладывать, пусть коты сами компонуют
+
+Denis Mikhaylov, [22.02.18 13:42]
+[In reply to Vladimir Sam]
+Это как?
+
+Denis Mikhaylov, [22.02.18 13:42]
+например
+
+Vladimir Sam, [22.02.18 13:44]
+case class Baz(f1: Int, f2: String)
+  case class Foo(bar: String, baz: Baz)
+
+  def action(foo: Foo)(implicit Validator[Foo]): F[ValidationResult[Foo]]
