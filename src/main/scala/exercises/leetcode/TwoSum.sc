@@ -1,13 +1,11 @@
-import java.util
+import exercises.leetcode._
 
-import scala.collection.mutable.ArrayBuffer
-
-def time[T](b: => T):(T,Long) = {
-  val t1 = System.currentTimeMillis()
-  val res = b
-  val t2 = System.currentTimeMillis()
-  (res, t2-t1)
-}
+//def time[T](b: => T):(T,Long) = {
+//  val t1 = System.currentTimeMillis()
+//  val res = b
+//  val t2 = System.currentTimeMillis()
+//  (res, t2-t1)
+//}
 
 def twoSum(nums: Array[Int], target: Int): Array[Int] = {
   val res = for {
