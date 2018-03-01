@@ -15,4 +15,5 @@ libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % "1.0.1"
 
 )
+libraryDependencies += "co.fs2" %% "fs2-core" % "0.10.1"
     
