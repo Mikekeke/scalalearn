@@ -1,6 +1,6 @@
 // https://blog.ssanj.net/posts/2017-06-07-composing-monadic-functions-with-kleisli-arrows.html
-import cats.data.Kleisli
-import cats.implicits._
+  import cats.data.Kleisli
+  import cats.implicits._
 
 val correct: List[Option[Double]] = List(Some(8.4), None, None)
 val testVals = List("4", "a222", "")
