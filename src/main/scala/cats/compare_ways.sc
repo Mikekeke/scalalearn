@@ -23,6 +23,9 @@ def readPerson: Config => Option[Person] = cfg =>
     age <- readAge(cfg)
   } yield Person(name, age)
 
+def readPersonDesugared: Config => Option[Person] = cfg =>
+  readName(cfg).flatMap(name => readAge(cfg).map(age => Person(name, age)))
+
 def readAgeK: Kleisli[Option, Config, Age] = Kleisli(cfg => {
   val age = cfg.age
   if (age >= 1 && age <= 150) Option(Age(age)) else None
@@ -33,9 +36,6 @@ def readPersonK: Kleisli[Option, Config, Person] =
     name <- Kleisli(readName)
     age <- readAgeK
   } yield Person(name, age)
-
-def readPersonDesugared: Config => Option[Person] = cfg =>
-  readName(cfg).flatMap(name => readAge(cfg).map(age => Person(name, age)))
 
 def readPersonKDesugared: Kleisli[Option, Config, Person] =
   Kleisli(readName).flatMap(name => Kleisli(readAge).map(age => Person(name, age)))
