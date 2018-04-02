@@ -22,4 +22,5 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-testkit" % "10.1.0" % Test
 )
 
+libraryDependencies += "io.monix" %% "monix" % "3.0.0-RC1"
     

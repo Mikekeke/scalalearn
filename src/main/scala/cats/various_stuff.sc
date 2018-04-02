@@ -1,5 +1,10 @@
+import java.net.URL
+
+import cats.Monad
 import cats.syntax.apply._
 import cats.instances.option._
+
+import scala.concurrent.Future
 
 // from telegram
 val x = Option(1)
