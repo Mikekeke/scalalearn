@@ -1,5 +1,5 @@
 // https://blog.ssanj.net/posts/2017-06-07-composing-monadic-functions-with-kleisli-arrows.html
-  import cats.data.Kleisli
+  import cats.data.{EitherT, Kleisli}
   import cats.implicits._
 
 val correct: List[Option[Double]] = List(Some(8.4), None, None)
@@ -37,6 +37,40 @@ def someOpt[T](x:T) = Some(x)
 val kl1 = Kleisli.liftF[Option, String, Int](Option(1))
 val kLift1Test = kl1 andThen Kleisli(multByTwoOne)
 val liftRes = kLift1Test("fff")
+
+
+// more with MonadT
+val s = Stream.fill(2)("Lol") :+ "Lul"
+s.take(10) toList
+val ls = List(1,2,3,4)
+val optionEthList = EitherT[Option, String, List[Int]](Option(Right(ls)))
+val plusOne = (x: Int) => x+1
+
+type EthTSL = EitherT[Option, String, List[Int]]
+def fn(et: EthTSL) = for {
+  it <- et
+} yield it map plusOne
+
+
+fn(optionEthList)
+
+fn(EitherT[Option, String, List[Int]](Option(Left("kek"))))
+def fn2 = (et: List[Int]) => et match {
+  case Nil => EitherT[Option, String, List[Int]](Option(Left("Error: empty list")))
+  case l: List[Int] => EitherT[Option, String, List[Int]](Option(Right(l map plusOne)))
+}
+val fn2K = Kleisli(fn2)
+val optEthListEmpty: EthTSL = EitherT.pure(List.empty[Int])
+def test (in: EthTSL) = for {
+  ls <- in
+  res <- fn2K.apply(ls)
+} yield res
+
+test(optionEthList)
+test(optEthListEmpty)
+// or
+optionEthList flatMap fn2K.run
+optEthListEmpty flatMap fn2K.run
 
 
 
