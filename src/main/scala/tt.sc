@@ -38,5 +38,7 @@ val fs = List(
 ) map {case (line, pos) => Try(findFun(pos)(line)(';'))}
 fs.zipWithIndex.map(_.swap) foreach println
 
+List.empty[Int].dropWhile(4>)
+
 
 
