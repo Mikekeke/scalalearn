@@ -22,3 +22,17 @@ def grpBy_2[A, B](l: List[A])(f: A => B): Map[B, List[A]] =
     else acc + (key -> List(el))
   }
 grpBy_2(List(1, 2, 2))(identity)
+
+def groupWith[A](l: List[A])(p : A => A => Boolean): List[List[A]] = l match {
+  case Nil => Nil
+  case x :: Nil =>
+    List(List(x))
+  case x :: xs if p(x)(xs.head) =>
+    val y :: ys = groupWith(xs)(p)
+    (x :: y) :: ys
+  case x :: xs =>
+    List(x) :: groupWith(xs)(p)
+}
+
+groupWith("abcdfqfxyz".toList)(x => h => (x+1).toChar == h)
+groupWith("aaaddfqqqfxyz".toList)(x => h => x == h)
